@@ -1,0 +1,55 @@
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> neighbors;
+    public Node() {
+        val = 0;
+        neighbors = new ArrayList<Node>();
+    }
+    public Node(int _val) {
+        val = _val;
+        neighbors = new ArrayList<Node>();
+    }
+    public Node(int _val, ArrayList<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+}
+*/
+
+class Solution {
+    public void ddfs(Node node, Set<Node> set, Map<Node,Node> map,Node ans){
+        if(!set.add(node)){
+            return;
+        }
+        ans.val = node.val;
+        for(Node i : node.neighbors){
+            ans.neighbors.add(map.get(i));
+        }
+        for(int i=0;i<node.neighbors.size();i++){
+            ddfs(node.neighbors.get(i),set,map,ans.neighbors.get(i));
+        }
+    }
+    public void dfs(Node node, List<Node> l,Set<Node> set){
+        if(!set.add(node)){
+            return;
+        }
+        l.add(node);
+        for(Node i : node.neighbors){
+            dfs(i,l,set);
+        }
+    }
+    public Node cloneGraph(Node node) {
+        if(node==null) return null;
+        List<Node> l = new ArrayList<>();
+        dfs(node,l,new HashSet<>());
+        Map<Node,Node> map = new HashMap<>();
+        for(Node i : l){
+            map.put(i,new Node(i.val));
+        }
+        Node ans = map.get(node);
+        ddfs(node,new HashSet<>(),map,ans);
+        return ans;
+    }
+}
