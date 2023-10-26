@@ -1,1 +1,28 @@
-
+class Solution {
+    public boolean canFinish(int n, int[][] pre) {
+        int []indeg = new int[n+1];
+        Queue<Integer> q = new LinkedList<>();
+        Map<Integer,List<Integer>> map = new HashMap<>();
+        for(int i=0;i<n;i++) map.put(i,new ArrayList<>());
+        for(int i=0;i<pre.length;i++){
+            indeg[pre[i][0]]++;
+            map.get(pre[i][1]).add(pre[i][0]);
+        }
+        for(int i=0;i<n;i++){
+            if(indeg[i]==0) q.add(i);
+        }
+        Set<Integer> set = new HashSet<>();
+        while(!q.isEmpty()){
+            int size=q.size();
+            for(int i=0;i<size;i++){
+                int curr = q.poll();
+                set.add(curr);
+                for(int j : map.get(curr)){
+                    indeg[j]--;
+                    if(indeg[j]==0) q.add(j);
+                }
+            }
+        }
+        return set.size()==n;
+    }
+}
