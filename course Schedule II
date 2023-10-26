@@ -1,0 +1,31 @@
+class Solution {
+    public void decreaseindeg(int []indeg, List<Integer> l){
+        for(int i : l) indeg[i]--;
+    }
+    public int[] findOrder(int num, int[][] pre) {
+        Map<Integer,List<Integer>> map = new HashMap<>();
+        for(int i=0;i<num;i++) map.put(i,new ArrayList<>());
+        int indeg[] = new int[num];
+        for(int []i : pre){
+            map.get(i[1]).add(i[0]);
+            indeg[i[0]]++;
+        }
+        int []ans = new int[num];
+        int x=0;
+        int count=0;
+        while(count<num){
+            int flag=0;
+            for(int i=0;i<num;i++){
+                if(indeg[i]==0){
+                    flag=1;
+                    decreaseindeg(indeg,map.get(i));
+                    count++;
+                    indeg[i]=-1;
+                    ans[x++]=i;
+                }
+            }
+            if(flag==0) return new int[0];
+        }
+        return ans;
+    }
+}
