@@ -1,0 +1,24 @@
+class Solution {
+    public int getBombCnt(int curr,int [][]bombs,boolean []vis){
+        vis[curr]=true;
+        int val=0;
+        for(int j=0;j<bombs.length;j++){
+            if(j==curr || vis[j]) continue;
+            long x1 = bombs[curr][0], y1 =  bombs[curr][1], r1 = bombs[curr][2];
+            long x2 = bombs[j][0], y2 = bombs[j][1], r2 = bombs[j][2];
+            long dist = ((x1-x2)*(x1-x2))+((y1-y2)*(y1-y2));
+            if(r1*r1>=dist){
+                val+= 1+getBombCnt(j,bombs,vis);
+            }
+        }
+        return val;
+    }
+    public int maximumDetonation(int[][] bombs) {
+        int ans=0;
+        for(int i=0;i<bombs.length;i++){
+            int val = 1+getBombCnt(i,bombs,new boolean[bombs.length]);
+            ans=Math.max(ans,val);
+        }
+        return ans;
+    }
+}
